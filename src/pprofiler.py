@@ -13,20 +13,26 @@ def parameterized(dec):
 
 
 @parameterized
-def pprof(f, sort_by="ncalls"):
+def pprof(f, sort_by="ncalls", line_to_print=None, strip_dirs=False):
     @wraps(f)
     def wrapper(*args, **kwargs):
         profiler = cProfile.Profile()
         profiler.enable()
         result = f(*args, **kwargs)
         profiler.disable()
-        print_stats(profiler, sort_by=sort_by)
+        print_stats(profiler, sort_by=sort_by, line_to_print=None, strip_dirs=strip_dirs)
         return result
 
     return wrapper
 
 
-def print_stats(profiler, sort_by="ncalls"):
+def print_stats(profiler, sort_by="ncalls", line_to_print=None, strip_dirs=False):
     stats = pstats.Stats(profiler)
-    stats.sort_stats(sort_by)
-    stats.print_stats()
+    if strip_dirs:
+        stats.strip_dirs()
+
+    if isinstance(sort_by, (tuple, list)):
+        stats.sort_stats(*sort_by)
+    else:
+        stats.sort_stats(sort_by)
+    stats.print_stats(line_to_print)

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pprofiler"
-version = "0.1.1"
+version = "0.1.2"
 description = "Python Decorator for Profiling Function or Method"
 readme = "README.md"
 homepage = "https://github.com/nsiregar/pprof"
